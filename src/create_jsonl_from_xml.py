@@ -1,7 +1,15 @@
 import xml.etree.ElementTree as ET
 import spacy
 import json
-from preprocess import normalize_text, to_bio_sentiment
+import argparse
+import sys
+from pathlib import Path
+
+# Add project root to Python path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.preprocess import normalize_text, to_bio_sentiment  # noqa: E402
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -57,3 +65,16 @@ def convert_xml_to_jsonl(xml_path, jsonl_path):
             out_f.write(json.dumps(example) + "\n")
 
     print("Saved:", jsonl_path)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Convert XML files to JSONL format")
+    parser.add_argument("--xml", required=True, help="Path to input XML file")
+    parser.add_argument("--out", required=True, help="Path to output JSONL file")
+    args = parser.parse_args()
+
+    convert_xml_to_jsonl(args.xml, args.out)
+
+
+if __name__ == "__main__":
+    main()
