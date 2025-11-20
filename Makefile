@@ -11,13 +11,18 @@ format:
 lint:
 	flake8 --ignore=W503,C,N *.py
 
-# Run the data_analysis.py
+# Run the preprocess test
 preprocess:
-	python preprocess.py
+	python tests/preprocess_test.py
 
 # run convert_xml bash script
 convert:
 	./scripts/convert_xml.sh
+
+# run load data 
+load:
+	python tests/test_load_data.py
+
 # Clean up Python cache files
 clean:
 	rm -rf __pycache__ .DS_Store
