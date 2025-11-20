@@ -1,0 +1,13 @@
+numpy
+pandas
+scikit-learn
+scipy
+tqdm
+spacy
+sklearn-crfsuite
+seqeval
+torch
+torchtext
+torchcrf
+gensim
+tabulate
