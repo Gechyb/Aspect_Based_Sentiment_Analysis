@@ -7,8 +7,11 @@ tqdm
 spacy
 sklearn-crfsuite
 seqeval
-torch
-torchtext
+torch==2.3.0
+torchvision==0.18.0
+torchaudio==2.3.0
+torchtext==0.18.0  
 torchcrf
 gensim
 tabulate
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
