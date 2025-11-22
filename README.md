@@ -17,11 +17,12 @@ Purpose:
 - Show where CRF performs well and where it struggles
 - Required for Step 3a ("probabilistic/generative model on synthetic data")
 
+Initially ran this
 run test_crf_synthetic.py
 ```bash
 python tests/test_crf_synthetic.py
 ```
-
+```bash
 train = synthetic_data[:4]
 test = synthetic_data[4:]
 
@@ -40,7 +41,7 @@ Sentence: The battery life could be better
 Gold:     ['O', 'B-NEG', 'I-NEG', 'O', 'O', 'O']
 Pred:     ['O', 'B-POS', 'I-POS', 'O', 'O', 'O']
 ----------------------------------------
-
+```
 On a controlled synthetic dataset, the CRF successfully learned to associate aspect spans with sentiment in simple constructions (e.g., “battery life is great”) but failed to correctly classify neutral sentiment (“keyboard is fine”) when that label was not present in the training data. Even after including a neutral example, the model still struggled with more implicit expressions such as “battery life could be better,” predicting positive sentiment instead of negative. This highlights the CRF’s dependence on training coverage and surface patterns rather than deeper semantic understanding.
 
  
