@@ -1,4 +1,4 @@
-TAGS = ["B-POS", "I-POS", "B-NEG", "I-NEG", "B-NEU", "I-NEU", "O"]
+TAGS = ["PAD", "O", "B-POS", "I-POS", "B-NEG", "I-NEG", "B-NEU", "I-NEU"]
 
 TAG2ID = {t: i for i, t in enumerate(TAGS)}
 ID2TAG = {i: t for t, i in TAG2ID.items()}

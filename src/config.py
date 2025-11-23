@@ -19,4 +19,4 @@ class Config:
     lr: float = 1e-3
     batch_size: int = 32
     epochs: int = 10
-    glove_path: Path = Path("data/glove.6B.100d.txt")  # will adjust if needed
+    glove_path: Path = Path("data/glove/")
