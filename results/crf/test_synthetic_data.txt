@@ -1,0 +1,44 @@
+
+=== Synthetic CRF Experiment Results ===
+Precision: 1.000
+Recall:    1.000
+F1 Score:  1.000
+
+=== Qualitative Examples ===
+
+Sentence: The battery life is great
+Gold:     ['O', 'B-POS', 'I-POS', 'O', 'O']
+Pred:     ['O', 'B-POS', 'I-POS', 'O', 'O']
+----------------------------------------
+Sentence: Amazing battery quality
+Gold:     ['O', 'B-POS', 'I-POS']
+Pred:     ['O', 'B-POS', 'I-POS']
+----------------------------------------
+Sentence: This screen looks fantastic
+Gold:     ['O', 'B-POS', 'O', 'O']
+Pred:     ['O', 'B-POS', 'O', 'O']
+----------------------------------------
+Sentence: The screen is terrible
+Gold:     ['O', 'B-NEG', 'O', 'O']
+Pred:     ['O', 'B-NEG', 'O', 'O']
+----------------------------------------
+Sentence: Battery life is awful
+Gold:     ['B-NEG', 'I-NEG', 'O', 'O']
+Pred:     ['B-NEG', 'I-NEG', 'O', 'O']
+----------------------------------------
+Sentence: The battery life could be better
+Gold:     ['O', 'B-NEG', 'I-NEG', 'O', 'O', 'O']
+Pred:     ['O', 'B-NEG', 'I-NEG', 'O', 'O', 'O']
+----------------------------------------
+Sentence: The keyboard is fine
+Gold:     ['O', 'B-NEU', 'O', 'O']
+Pred:     ['O', 'B-NEU', 'O', 'O']
+----------------------------------------
+Sentence: This keyboard feels cheap
+Gold:     ['O', 'B-NEG', 'O', 'O']
+Pred:     ['O', 'B-NEG', 'O', 'O']
+----------------------------------------
+Sentence: Screen quality is okay
+Gold:     ['O', 'B-NEU', 'O', 'O']
+Pred:     ['O', 'B-NEU', 'O', 'O']
+----------------------------------------
