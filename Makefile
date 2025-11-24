@@ -5,7 +5,7 @@ install:
 
 # format code with black
 format:
-	black *.py
+	black src/*.py
 
 # Run linter (flake8 for Python files)
 lint:
@@ -22,7 +22,7 @@ convert:
 # run load data 
 load:
 	python tests/test_load_data.py
-	
+
 # train crf model
 crf:
 	./scripts/train_crf.sh
