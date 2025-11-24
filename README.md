@@ -133,9 +133,8 @@ Aspect_Based_Sentiment_Analysis/
 ├── scripts/
 │   ├── convert_xml.sh             # Data preprocessing
 │   ├── train_crf.sh               # Train CRF baseline
-│   ├── train_bilstm_crf.sh        # Train BiLSTM-CRF
-│   └── visualizations_bilstm.py   # Generate visualizations
-│
+│   └──  train_bilstm_crf.sh        # Train BiLSTM-CRF
+│   
 ├── src/
 │   ├── models/
 │   │   |── bilstm_crf.py          # BiLSTM-CRF architecture
