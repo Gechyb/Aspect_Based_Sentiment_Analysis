@@ -1,6 +1,6 @@
 # Aspect-Based Sentiment Analysis via Sequence Tagging
 
-**Authors:** Ogechukwu Ezenwa, Supriya Nannapaneni, Sejal Jagtap,
+**Authors:** Ogechukwu Ezenwa, Supriya Nannapaneni, Sejal Jagtap
 **Course:** ECE-684 Natural Language Processing (Final Project), Duke University  
 **Date:** Fall 2025
 
