@@ -1,17 +1,17 @@
 import argparse
 from pathlib import Path
 from collections import Counter
-
 import torch
 from torch.utils.data import Dataset, DataLoader
 from tabulate import tabulate
-
+import random
+import numpy as np
 from .config import Config
 from .data_utils import load_sentences, train_val_test_split
 from .models.bilstm_crf import BiLSTMCRF
 from .metrics import span_f1
 from .tagging_scheme import TAGS, TAG2ID, ID2TAG
-from .glove_utils import load_embeddings_for_vocab  # NEW
+from .glove_utils import load_embeddings_for_vocab
 
 
 class ABSASeqDataset(Dataset):
@@ -81,6 +81,23 @@ def collate(batch):
     return pad_x, pad_y, mask
 
 
+def set_seed(seed):
+    """
+    Set all random seeds for reproducibility.
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+
+    # Make PyTorch deterministic
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+
 def evaluate(model, dataloader, device):
     model.eval()
     all_true = []
@@ -134,18 +151,20 @@ def main():
 
     cfg = Config(domain=args.domain)
 
-    # 1. Load data
+    # Set random seeds for reproducibility
+    set_seed(cfg.seed)
+    print(f"Random seed set to: {cfg.seed}")
+
     path = Path(cfg.data_dir) / f"{cfg.domain}.jsonl"
     data = load_sentences(path)
 
-    # 2. Split into train/val/test
     train, val, test = train_val_test_split(data, seed=cfg.seed)
 
-    # 3. Build vocab from training set only
+    # Build vocab from training set only
     vocab = build_vocab(train, min_freq=1)
     print(f"Vocabulary size: {len(vocab)}")
 
-    # NEW: 4. Load GloVe embeddings if requested
+    # Load GloVe embeddings if requested
     pretrained_embeddings = None
     if args.use_glove:
         try:
@@ -157,12 +176,10 @@ def main():
             print("Continuing with random embeddings...")
             pretrained_embeddings = None
 
-    # 5. Wrap in Datasets
     train_ds = ABSASeqDataset(train, vocab)
     val_ds = ABSASeqDataset(val, vocab)
     test_ds = ABSASeqDataset(test, vocab)
 
-    # 6. DataLoaders
     train_dl = DataLoader(
         train_ds, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate
     )
@@ -173,7 +190,7 @@ def main():
         test_ds, batch_size=cfg.batch_size, shuffle=False, collate_fn=collate
     )
 
-    # 7. Model & optimizer
+    # Model & optimizer
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
@@ -191,7 +208,7 @@ def main():
 
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=1e-5)
 
-    # 8. Training loop with model checkpointing
+    # Training loop with model checkpointing
     best_val_f1 = 0.0
     best_model_state = None
 
@@ -214,7 +231,7 @@ def main():
         # Evaluate on validation set each epoch
         p_val, r_val, f_val = evaluate(model, val_dl, device)
 
-        # Save best model checkpoint
+        # Saving best model checkpoint
         if f_val > best_val_f1:
             best_val_f1 = f_val
             best_model_state = {

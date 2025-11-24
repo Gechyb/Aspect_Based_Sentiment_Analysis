@@ -1,0 +1,36 @@
+Random seed set to: 42
+Vocabulary size: 3467
+Loading GloVe embeddings from data/glove/glove.6B.200d.txt...
+Loaded 400000 word vectors of dimension 200
+GloVe coverage: 3220/3467 (92.9%)
+Using device: cpu
+Loading pre-trained embeddings...
+Model parameters: 1033439
+Epoch 1/20 - train_loss=336.4623 - val_F1=0.000 (P=0.000, R=0.000) *
+Epoch 2/20 - train_loss=157.7649 - val_F1=0.000 (P=0.000, R=0.000) *
+Epoch 3/20 - train_loss=127.2576 - val_F1=0.163 (P=0.280, R=0.115) *
+Epoch 4/20 - train_loss=107.8886 - val_F1=0.214 (P=0.268, R=0.178) *
+Epoch 5/20 - train_loss=94.2688 - val_F1=0.351 (P=0.388, R=0.321) *
+Epoch 6/20 - train_loss=82.8826 - val_F1=0.301 (P=0.332, R=0.275) 
+Epoch 7/20 - train_loss=72.2315 - val_F1=0.370 (P=0.433, R=0.324) *
+Epoch 8/20 - train_loss=64.3524 - val_F1=0.437 (P=0.479, R=0.401) *
+Epoch 9/20 - train_loss=56.7191 - val_F1=0.430 (P=0.471, R=0.395) 
+Epoch 10/20 - train_loss=50.7073 - val_F1=0.466 (P=0.487, R=0.447) *
+Epoch 11/20 - train_loss=44.5292 - val_F1=0.384 (P=0.396, R=0.372) 
+Epoch 12/20 - train_loss=39.5280 - val_F1=0.503 (P=0.527, R=0.481) *
+Epoch 13/20 - train_loss=33.8251 - val_F1=0.458 (P=0.487, R=0.433) 
+Epoch 14/20 - train_loss=29.9792 - val_F1=0.461 (P=0.505, R=0.424) 
+Epoch 15/20 - train_loss=26.0533 - val_F1=0.469 (P=0.497, R=0.444) 
+Epoch 16/20 - train_loss=22.0720 - val_F1=0.454 (P=0.485, R=0.427) 
+Epoch 17/20 - train_loss=18.5938 - val_F1=0.423 (P=0.451, R=0.398) 
+Epoch 18/20 - train_loss=15.7459 - val_F1=0.433 (P=0.449, R=0.418) 
+Epoch 19/20 - train_loss=13.9008 - val_F1=0.431 (P=0.441, R=0.421) 
+Epoch 20/20 - train_loss=11.6094 - val_F1=0.430 (P=0.450, R=0.413) 
+
+Loading best model from epoch 12 (val_F1=0.503)
+
+Model                 Precision    Recall     F1
+------------------  -----------  --------  -----
+BiLSTM-CRF + GloVe        0.538     0.458  0.495
+
+Best validation F1: 0.503

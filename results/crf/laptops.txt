@@ -1,0 +1,10 @@
+
+Validation Performance (for model selection / monitoring):
+Model      Precision    Recall        F1
+-------  -----------  --------  --------
+CRF            0.507     0.309  0.384342
+
+Test Performance (held-out evaluation):
+Model      Precision    Recall        F1
+-------  -----------  --------  --------
+CRF             0.57      0.32  0.409786
