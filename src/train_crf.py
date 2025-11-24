@@ -24,22 +24,21 @@ def main():
     args = parser.parse_args()
     cfg = Config(domain=args.domain)
 
-    # 1. Load data
     path = Path(cfg.data_dir) / f"{cfg.domain}.jsonl"  # pre-converted JSONL
     data = load_sentences(path)
 
-    # 2. Train/val/test split
+    # Train/val/test split
     train, val, test = train_val_test_split(data, seed=cfg.seed)
 
     X_tr, y_tr = prepare(train)
     X_va, y_va = prepare(val)
     X_te, y_te = prepare(test)
 
-    # 3. Train CRF on training set
+    # Train CRF on training set
     crf = CRFTagger(c1=cfg.crf_c1, c2=cfg.crf_c2, max_iterations=cfg.crf_max_iter)
     crf.fit(X_tr, y_tr)
 
-    # 4. Evaluate on validation set
+    # Evaluate on validation set
     y_val_pred = crf.predict(X_va)
     p_va, r_va, f_va = span_f1(y_va, y_val_pred)
 
@@ -51,7 +50,7 @@ def main():
         )
     )
 
-    # 5. Evaluate on test set
+    # Evaluate on test set
     y_te_pred = crf.predict(X_te)
     p_te, r_te, f_te = span_f1(y_te, y_te_pred)
 

@@ -62,12 +62,9 @@ def create_embedding_matrix(vocab, word2vec, embedding_dim=100):
             embedding_matrix[idx] = word2vec[word]
             num_found += 1
         elif word.lower() in word2vec:
-            # Try lowercase version
             embedding_matrix[idx] = word2vec[word.lower()]
             num_found += 1
         else:
-            # Initialize OOV words with small random values
-            # Note: <pad> at index 0 will remain zeros
             if word != "<pad>":
                 embedding_matrix[idx] = np.random.normal(
                     scale=0.6, size=(embedding_dim,)
