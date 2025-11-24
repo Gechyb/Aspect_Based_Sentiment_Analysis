@@ -20,7 +20,7 @@ This project implements a unified approach to Aspect-Based Sentiment Analysis (A
 
 1. **Clone the repository:**
 ```bash
-git clone git@github.com:Gechyb/Aspect_Based_Sentiment_Analysis.git
+git clone https://github.com/Gechyb/Aspect_Based_Sentiment_Analysis.git
 cd Aspect_Based_Sentiment_Analysis
 ```
 
@@ -58,7 +58,7 @@ make convert
 ```bash
 mkdir -p data/glove
 cd data/glove
-wget http://nlp.stanford.edu/data/glove.6B.zip
+curl -L -O http://nlp.stanford.edu/data/glove.6B.zip
 unzip glove.6B.zip
 cd ../..
 ```
