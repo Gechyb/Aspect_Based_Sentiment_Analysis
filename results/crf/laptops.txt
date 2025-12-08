@@ -1,10 +1,16 @@
 
-Validation Performance (for model selection / monitoring):
-Model      Precision    Recall        F1
--------  -----------  --------  --------
-CRF            0.507     0.309  0.384342
+ Dataset: laptops
+ Using GloVe features: False
 
-Test Performance (held-out evaluation):
-Model      Precision    Recall        F1
--------  -----------  --------  --------
-CRF             0.57      0.32  0.409786
+ Training CRF...
+
+
+ Validation Results:
+Model       Precision    Recall     F1
+--------  -----------  --------  -----
+CRF Base        0.502     0.309  0.383
+
+ Test Results:
+Model       Precision    Recall     F1
+--------  -----------  --------  -----
+CRF Base        0.582     0.332  0.422

@@ -2,7 +2,7 @@ from typing import List, Dict
 import json
 import os
 
-# Optional glove clustering file
+# glove clustering file
 CLUSTER_PATH = "data/glove/glove_clusters.json"
 if os.path.exists(CLUSTER_PATH):
     with open(CLUSTER_PATH, "r") as f:
@@ -50,7 +50,7 @@ def token2features(sent_tokens: List[str], i: int, use_glove=False) -> Dict[str,
     else:
         features["EOS"] = True
 
-    # Optional: Add glove embedding bucket
+    # Add glove embedding bucket
     if use_glove:
         cluster = GLOVE_CLUSTERS.get(word_lower, "UNK")
         features["glove_cluster"] = str(cluster)

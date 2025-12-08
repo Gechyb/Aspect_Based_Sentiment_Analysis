@@ -1,16 +1,16 @@
 
-📌 Dataset: restaurants
-🔧 Using GloVe features: False
+ Dataset: restaurants
+ Using GloVe features: False
 
-🚀 Training CRF...
+ Training CRF...
 
 
-📊 Validation Results:
+ Validation Results:
 Model       Precision    Recall     F1
 --------  -----------  --------  -----
 CRF Base        0.542     0.402  0.462
 
-📌 Test Results:
+ Test Results:
 Model       Precision    Recall     F1
 --------  -----------  --------  -----
 CRF Base        0.516     0.375  0.435

@@ -1,11 +1,11 @@
 
- Dataset: restaurants
+ Dataset: laptops
  Using GloVe features: True
 
  Loading GloVe embeddings...
 Loading GloVe embeddings from data/glove/glove.6B.200d.txt...
 Loaded 400000 word vectors of dimension 200
-✓ Loaded GloVe coverage: 400000/4487 tokens
+✓ Loaded GloVe coverage: 400000/4163 tokens
 
 
  Training CRF...
@@ -14,9 +14,9 @@ Loaded 400000 word vectors of dimension 200
  Validation Results:
 Model          Precision    Recall     F1
 -----------  -----------  --------  -----
-CRF + GloVe        0.547     0.404  0.465
+CRF + GloVe         0.51     0.307  0.383
 
  Test Results:
 Model          Precision    Recall     F1
 -----------  -----------  --------  -----
-CRF + GloVe        0.516     0.375  0.435
+CRF + GloVe         0.57     0.322  0.412
