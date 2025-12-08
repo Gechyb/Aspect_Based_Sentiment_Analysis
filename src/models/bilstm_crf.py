@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from TorchCRF import CRF  # <-- using your preferred CRF library
+from TorchCRF import CRF
 
 
 class BiLSTMCRF(nn.Module):
@@ -35,7 +35,6 @@ class BiLSTMCRF(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.hidden2tag = nn.Linear(hidden_dim, tagset_size)
 
-        # ❗ TorchCRF DOES NOT support PAD as a label — so we exclude it.
         # tagset_size−1 removes PAD so CRF sees only valid labels.
         self.crf = CRF(tagset_size - 1)
 
@@ -48,7 +47,6 @@ class BiLSTMCRF(nn.Module):
 
         emissions = self.hidden2tag(outputs)
 
-        # Remove PAD class from logits before passing into CRF
         emissions = emissions[:, :, 1:]  # (batch, seq_len, num_tags_without_PAD)
 
         if tags is not None:
@@ -60,7 +58,6 @@ class BiLSTMCRF(nn.Module):
             loss = -log_likelihood.mean()
             return loss
 
-        # ----------- DECODING -----------
         best_paths = self.crf.viterbi_decode(emissions, mask=mask)
 
         decoded = []

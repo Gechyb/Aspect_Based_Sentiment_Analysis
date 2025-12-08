@@ -5,32 +5,44 @@ Loaded 400000 word vectors of dimension 200
 GloVe coverage: 3468/3719 (93.3%)
 Using device: cpu
 Loading pre-trained embeddings...
-Model parameters: 1083839
-Epoch 1/20 - train_loss=329.9700 - val_F1=0.003 (P=0.333, R=0.002) *
-Epoch 2/20 - train_loss=167.1703 - val_F1=0.283 (P=0.382, R=0.225) *
-Epoch 3/20 - train_loss=134.8350 - val_F1=0.381 (P=0.426, R=0.344) *
-Epoch 4/20 - train_loss=115.3389 - val_F1=0.423 (P=0.474, R=0.381) *
-Epoch 5/20 - train_loss=99.4104 - val_F1=0.461 (P=0.498, R=0.430) *
-Epoch 6/20 - train_loss=86.8880 - val_F1=0.472 (P=0.496, R=0.449) *
-Epoch 7/20 - train_loss=76.4367 - val_F1=0.492 (P=0.513, R=0.472) *
-Epoch 8/20 - train_loss=67.3343 - val_F1=0.498 (P=0.515, R=0.483) *
-Epoch 9/20 - train_loss=59.9996 - val_F1=0.499 (P=0.535, R=0.467) *
-Epoch 10/20 - train_loss=51.8532 - val_F1=0.534 (P=0.566, R=0.506) *
-Epoch 11/20 - train_loss=44.8791 - val_F1=0.551 (P=0.560, R=0.541) *
-Epoch 12/20 - train_loss=39.7865 - val_F1=0.542 (P=0.580, R=0.509) 
-Epoch 13/20 - train_loss=34.2668 - val_F1=0.532 (P=0.554, R=0.512) 
-Epoch 14/20 - train_loss=29.5674 - val_F1=0.547 (P=0.563, R=0.532) 
-Epoch 15/20 - train_loss=26.4546 - val_F1=0.548 (P=0.572, R=0.525) 
-Epoch 16/20 - train_loss=22.4984 - val_F1=0.534 (P=0.549, R=0.520) 
-Epoch 17/20 - train_loss=19.7548 - val_F1=0.521 (P=0.529, R=0.514) 
-Epoch 18/20 - train_loss=17.7554 - val_F1=0.534 (P=0.547, R=0.522) 
-Epoch 19/20 - train_loss=14.8533 - val_F1=0.504 (P=0.514, R=0.494) 
-Epoch 20/20 - train_loss=12.1037 - val_F1=0.531 (P=0.552, R=0.511) 
+Model parameters: 881087
+Epoch 1/20 - train_loss=7.3471 - val_F1=0.326 (P=0.376, R=0.288) *
+Epoch 2/20 - train_loss=3.8031 - val_F1=0.414 (P=0.456, R=0.380) *
+Epoch 3/20 - train_loss=2.9224 - val_F1=0.458 (P=0.496, R=0.425) *
+Epoch 4/20 - train_loss=2.3730 - val_F1=0.503 (P=0.525, R=0.483) *
+Epoch 5/20 - train_loss=1.8991 - val_F1=0.522 (P=0.540, R=0.506) *
+Epoch 6/20 - train_loss=1.5397 - val_F1=0.547 (P=0.573, R=0.523) *
+Epoch 7/20 - train_loss=1.2023 - val_F1=0.532 (P=0.556, R=0.511) 
+Epoch 8/20 - train_loss=0.9797 - val_F1=0.537 (P=0.544, R=0.530) 
+Epoch 9/20 - train_loss=0.7860 - val_F1=0.548 (P=0.568, R=0.530) *
+Epoch 10/20 - train_loss=0.6293 - val_F1=0.533 (P=0.543, R=0.523) 
+Epoch 11/20 - train_loss=0.5032 - val_F1=0.552 (P=0.563, R=0.541) *
+Epoch 12/20 - train_loss=0.3963 - val_F1=0.531 (P=0.558, R=0.507) 
+Epoch 13/20 - train_loss=0.3499 - val_F1=0.540 (P=0.553, R=0.527) 
+Epoch 14/20 - train_loss=0.2721 - val_F1=0.548 (P=0.566, R=0.532) 
+Epoch 15/20 - train_loss=0.1911 - val_F1=0.526 (P=0.539, R=0.514) 
+Epoch 16/20 - train_loss=0.1454 - val_F1=0.549 (P=0.563, R=0.536) 
+Epoch 17/20 - train_loss=0.1199 - val_F1=0.517 (P=0.527, R=0.507) 
+Epoch 18/20 - train_loss=0.0986 - val_F1=0.534 (P=0.545, R=0.523) 
+Epoch 19/20 - train_loss=0.0823 - val_F1=0.530 (P=0.541, R=0.520) 
+Epoch 20/20 - train_loss=0.0657 - val_F1=0.525 (P=0.542, R=0.509) 
 
-Loading best model from epoch 11 (val_F1=0.551)
+Loading best model from epoch 11 (val_F1=0.552)
 
 Model                 Precision    Recall     F1
 ------------------  -----------  --------  -----
-BiLSTM-CRF + GloVe        0.512      0.52  0.516
+BiLSTM-CRF + GloVe         0.53     0.502  0.515
 
-Best validation F1: 0.551
+Final Test Report:
+               precision    recall  f1-score   support
+
+         NEG       0.41      0.38      0.39       120
+         NEU       0.44      0.23      0.30       116
+         POS       0.59      0.65      0.61       318
+
+   micro avg       0.53      0.50      0.52       554
+   macro avg       0.48      0.42      0.44       554
+weighted avg       0.51      0.50      0.50       554
+
+
+Best validation F1: 0.552
