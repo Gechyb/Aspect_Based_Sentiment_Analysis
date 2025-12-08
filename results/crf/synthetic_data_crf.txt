@@ -1,0 +1,45 @@
+Synthetic CRF Evaluation Results
+Precision: 0.222
+Recall:    0.235
+F1 Score:  0.229
+Sample Predictions:
+Sentence: The battery lasts only an hour which is disappointing
+Gold:     ['O', 'B-NEG', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
+Pred:     ['O', 'B-NEG', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: Battery drains so fast it is frustrating
+Gold:     ['B-NEG', 'O', 'O', 'O', 'O', 'O', 'O']
+Pred:     ['B-NEG', 'O', 'O', 'O', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: The performance is fast
+Gold:     ['O', 'B-POS', 'O', 'O']
+Pred:     ['O', 'B-POS', 'O', 'O']
+--------------------------------------------------
+Sentence: Battery drains too fast
+Gold:     ['B-NEG', 'O', 'O', 'O']
+Pred:     ['B-NEG', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: The screen refresh is smooth
+Gold:     ['O', 'B-POS', 'I-POS', 'O', 'O']
+Pred:     ['O', 'B-POS', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: The typing experience is smooth but slow
+Gold:     ['O', 'B-NEU', 'I-NEU', 'O', 'O', 'O', 'O']
+Pred:     ['O', 'B-POS', 'O', 'O', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: The keyboard has only two hour battery
+Gold:     ['O', 'B-NEG', 'O', 'O', 'O', 'O', 'O']
+Pred:     ['O', 'B-NEG', 'I-NEG', 'O', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: I need to charge the laptop three times a day
+Gold:     ['O', 'O', '', 'O', 'O', 'B-NEG', 'O', 'O', 'O', 'O']
+Pred:     ['B-POS', 'I-POS', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: The fan makes a constant noise
+Gold:     ['O', 'B-NEG', 'O', 'O', 'O', 'O']
+Pred:     ['O', 'B-POS', 'O', 'O', 'O', 'O']
+--------------------------------------------------
+Sentence: The screen is not as bright as other laptops
+Gold:     ['O', 'B-NEG', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
+Pred:     ['O', 'B-POS', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
+--------------------------------------------------
