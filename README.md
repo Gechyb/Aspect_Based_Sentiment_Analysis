@@ -106,7 +106,8 @@ bash scripts/train_crf.sh
 bash scripts/train_bilstm_crf.sh
 
 # Run crf on synthetic data
-python -m scripts.run_crf_synthetic
+python ./tests/test_crf_on_synthetic.py
+python ./tests/test_bilstm_on_synthetic.py
 ```
 
 ## Project Structure
