@@ -9,7 +9,7 @@ class Config:
 
         # Paths
         self.data_dir = "./data/intermediate"
-        self.glove_dir = "./data/glove"  # <── ADDED FOR YOUR ERROR FIX
+        self.glove_dir = "./data/glove"  
 
         # Model parameters
         self.embedding_dim = 200

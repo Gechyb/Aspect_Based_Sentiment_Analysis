@@ -19,9 +19,7 @@ from src.synthetic_data import (
 random.seed(42)
 torch.manual_seed(42)
 
-# =========================================================
 # Load Dataset
-# =========================================================
 
 train_data = generate_challenging_train_set(num_examples=80)
 test_data = generate_challenging_test_set()
@@ -58,9 +56,7 @@ def encode(dataset):
 X_train, Y_train = encode(train_data)
 X_test, Y_test = encode(test_data)
 
-# =========================================================
-# BiLSTM-CRF Model Setup
-# =========================================================
+# ---------- BiLSTM-CRF Model Setup ----------
 
 device = torch.device("cpu")
 
@@ -97,9 +93,7 @@ for epoch in range(50):
 
 print("\n")
 
-# =========================================================
-# Evaluation
-# =========================================================
+# ---------- Evaluation ----------
 
 preds, gold = [], []
 
@@ -116,12 +110,10 @@ pred_tags = [[ID2TAG[t] for t in seq] for seq in preds]
 
 precision, recall, f1 = span_f1(gold_tags, pred_tags)
 
-# =========================================================
-# Results Summary
-# =========================================================
+# ---------- Results Summary ----------
 
 print("=" * 80)
-print("📊 FINAL PERFORMANCE")
+print("FINAL PERFORMANCE")
 print("=" * 80)
 print(f"Precision: {precision:.3f}")
 print(f"Recall:    {recall:.3f}")
@@ -146,4 +138,4 @@ for i, (tokens, gold_seq, pred_seq) in enumerate(
     print(f"Pred: {pred_seq}")
     print("-" * 80)
 
-print("\nDONE ✔\n")
+print("\nDONE \n")

@@ -57,8 +57,8 @@ def main():
 
     cfg = Config(domain=args.domain)
 
-    print(f"\n📌 Dataset: {args.domain}")
-    print(f"🔧 Using GloVe features: {args.use_glove}")
+    print(f"\n Dataset: {args.domain}")
+    print(f" Using GloVe features: {args.use_glove}")
 
     path = Path(cfg.data_dir) / f"{cfg.domain}.jsonl"
     data = load_sentences(path)
@@ -67,7 +67,7 @@ def main():
 
     glove_embeddings = None
     if args.use_glove:
-        print("\n📥 Loading GloVe embeddings...")
+        print("\n Loading GloVe embeddings...")
         vocab = {t.lower() for s in data for t in s["tokens"]}
         glove_embeddings = load_glove_embeddings(
             f"data/glove/glove.6B.{cfg.embedding_dim}d.txt", cfg.embedding_dim
@@ -86,14 +86,14 @@ def main():
         all_possible_transitions=True,
     )
 
-    print("\n🚀 Training CRF...\n")
+    print("\n Training CRF...\n")
     crf.fit(X_tr, y_tr)
 
     # Validation
     y_val_pred = crf.predict(X_va)
     p_va, r_va, f_va = span_f1(y_va, y_val_pred)
 
-    print("\n📊 Validation Results:")
+    print("\n Validation Results:")
     print(
         tabulate(
             [
@@ -112,7 +112,7 @@ def main():
     y_te_pred = crf.predict(X_te)
     p_te, r_te, f_te = span_f1(y_te, y_te_pred)
 
-    print("\n📌 Test Results:")
+    print("\n Test Results:")
     print(
         tabulate(
             [

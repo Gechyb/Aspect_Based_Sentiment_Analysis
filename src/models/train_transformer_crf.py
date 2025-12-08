@@ -12,9 +12,8 @@ from src.data_utils import load_sentences, train_val_test_split
 from src.models.bert_crf import BERT_CRF
 
 
-# ------------------------------
-# Dataset for BERT + CRF
-# ------------------------------
+# ---------- Dataset for BERT + CRF ----------
+
 class TransformerABSA(torch.utils.data.Dataset):
     def __init__(self, data, tokenizer, max_len=128):
         self.data = data
@@ -55,9 +54,8 @@ class TransformerABSA(torch.utils.data.Dataset):
         }
 
 
-# ------------------------------
-# Training Loop
-# ------------------------------
+# ---------- Training Loop ----------
+
 def train_epoch(model, dataloader, optim, device):
     model.train()
     total_loss = 0
@@ -84,9 +82,9 @@ def train_epoch(model, dataloader, optim, device):
     return total_loss / len(dataloader)
 
 
-# ------------------------------
-# Evaluation Loop
-# ------------------------------
+
+# ---------- Evaluation Loop ----------
+
 def evaluate(model, dataloader, device):
     model.eval()
     all_pred, all_true = [], []
@@ -114,9 +112,9 @@ def evaluate(model, dataloader, device):
     return span_f1(all_true, all_pred)
 
 
-# ------------------------------
-# Main
-# ------------------------------
+
+# ---------- Main ----------
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
