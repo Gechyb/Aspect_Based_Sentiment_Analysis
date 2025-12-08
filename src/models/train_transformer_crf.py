@@ -12,7 +12,8 @@ from src.data_utils import load_sentences, train_val_test_split
 from src.models.bert_crf import BERT_CRF
 
 
-# ---------- Dataset for BERT + CRF ----------
+#  Dataset for BERT + CRF
+
 
 class TransformerABSA(torch.utils.data.Dataset):
     def __init__(self, data, tokenizer, max_len=128):
@@ -54,7 +55,8 @@ class TransformerABSA(torch.utils.data.Dataset):
         }
 
 
-# ---------- Training Loop ----------
+#  Training Loop
+
 
 def train_epoch(model, dataloader, optim, device):
     model.train()
@@ -82,8 +84,8 @@ def train_epoch(model, dataloader, optim, device):
     return total_loss / len(dataloader)
 
 
+#  Evaluation Loop
 
-# ---------- Evaluation Loop ----------
 
 def evaluate(model, dataloader, device):
     model.eval()
@@ -112,8 +114,8 @@ def evaluate(model, dataloader, device):
     return span_f1(all_true, all_pred)
 
 
+#  Main
 
-# ---------- Main ----------
 
 def main():
     parser = argparse.ArgumentParser()
@@ -151,7 +153,7 @@ def main():
     best_f1 = 0
     best_state = None
 
-    print("\n🚀 Training transformer model...\n")
+    print("\n Training transformer model...\n")
 
     for epoch in range(5):  # can increase later
         train_loss = train_epoch(model, train_dl, optim, device)
@@ -163,7 +165,7 @@ def main():
             best_f1 = f
             best_state = {k: v.cpu() for k, v in model.state_dict().items()}
 
-    print(f"\n📌 Loading best model (Val F1={best_f1:.3f})...")
+    print(f"\n Loading best model (Val F1={best_f1:.3f})...")
     model.load_state_dict(best_state)
     model.to(device)
 

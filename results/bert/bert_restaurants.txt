@@ -1,0 +1,16 @@
+
+Training transformer model...
+
+Epoch 1 → Loss=7.9690, Val F1=0.356
+Epoch 2 → Loss=3.6295, Val F1=0.588
+Epoch 3 → Loss=2.2320, Val F1=0.610
+Epoch 4 → Loss=1.5574, Val F1=0.648
+Epoch 5 → Loss=1.0409, Val F1=0.617
+
+Loading best model (Val F1=0.648)...
+
+===== FINAL TEST RESULTS =====
+
+Model       Precision    Recall    F1
+--------  -----------  --------  ----
+BERT-CRF        0.543     0.622  0.58
