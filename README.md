@@ -128,13 +128,11 @@ Aspect_Based_Sentiment_Analysis/
 ├── results/
 │   ├── bilstm_crf/                # BiLSTM-CRF outputs
 │   └── crf/                       # CRF baseline outputs
-│       ├── restaurants.txt
-│       └── laptops.txt
 │
 ├── scripts/
 │   ├── convert_xml.sh             # Data preprocessing
 │   ├── train_crf.sh               # Train CRF baseline
-│   └──  train_bilstm_crf.sh        # Train BiLSTM-CRF
+│   └──  train_bilstm_crf.sh       # Train BiLSTM-CRF
 │   
 ├── src/
 │   ├── models/
@@ -149,12 +147,15 @@ Aspect_Based_Sentiment_Analysis/
 │   ├── glove_utils.py             # GloVe embedding loader
 │   ├── metrics.py                 # Evaluation metrics
 │   ├── preprocess.py              # Text preprocessing
+│   ├── synthetic_data.py.         # Synthetic data generator
 │   ├── tagging_scheme.py          # BIO-Sentiment tags
 │   ├── train_bilstm_crf.py        # BiLSTM-CRF training
 │   └── train_crf.py               # CRF baseline training
 │
 ├── tests/
 │   ├── preprocess_test.py
+│   ├── test_bilstm_on_synthetic.py
+│   ├── test_crf_on_synthetic.py
 │   ├── test_crf_synthetic.py
 │   └── test_load_data.py
 │
@@ -162,6 +163,7 @@ Aspect_Based_Sentiment_Analysis/
 ├── Makefile
 ├── README.md                       # Setup instructions
 ├── requirements.txt
+├── setup.cfg
 ```
 
 ## Configuration
