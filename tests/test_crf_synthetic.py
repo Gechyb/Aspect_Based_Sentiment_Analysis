@@ -1,82 +1,86 @@
 """
-Synthetic Experiment for Probabilistic Model
+Synthetic Experiment for CRF Model (Probabilistic Baseline)
 """
 
 import sys
 from pathlib import Path
 
-# Add project root so `src` package is importable when running this file directly
-project_root = Path(__file__).parent.parent
+# Ensure project imports work when running script standalone
+project_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.models.crf_model import CRFTagger
 from src.features_crf import sent2features
 from src.metrics import span_f1
+from src.synthetic_data import (
+    generate_challenging_train_set,
+    generate_challenging_test_set,
+)
 
-# 1. Synthetic dataset (clean, controlled)
+# =========================================================
+# 1. Load Synthetic Dataset
+# =========================================================
 
-# Each example: (tokens, labels)
-synthetic_data = [
-    # Positive sentiment examples
-    (["The", "battery", "life", "is", "great"], ["O", "B-POS", "I-POS", "O", "O"]),
-    (["Amazing", "battery", "quality"], ["O", "B-POS", "I-POS"]),
-    (["This", "screen", "looks", "fantastic"], ["O", "B-POS", "O", "O"]),
-    # Negative sentiment examples
-    (["The", "screen", "is", "terrible"], ["O", "B-NEG", "O", "O"]),
-    (["Battery", "life", "is", "awful"], ["B-NEG", "I-NEG", "O", "O"]),
-    (
-        ["The", "battery", "life", "could", "be", "better"],
-        ["O", "B-NEG", "I-NEG", "O", "O", "O"],
-    ),
-    # Neutral / mixed
-    (["The", "keyboard", "is", "fine"], ["O", "B-NEU", "O", "O"]),
-    (
-        ["This", "keyboard", "feels", "cheap"],
-        ["O", "B-NEG", "O", "O"],
-    ),
-    (["Screen", "quality", "is", "okay"], ["O", "B-NEU", "O", "O"]),
-]
-
-# Split into train/test manually (small dataset)
-# For this sanity check we train and evaluate on the same synthetic set
-# to verify the CRF can fit the patterns we defined.
-train = synthetic_data
-test = synthetic_data
+train_data = generate_challenging_train_set(num_examples=80)
+test_data = generate_challenging_test_set()
 
 
 def prepare(dataset):
     X, y = [], []
     for tokens, labels in dataset:
+
+        # ---- Safety: Fix empty or missing labels ----
+        if len(labels) != len(tokens):
+            print(f"⚠️ Fixing label length mismatch:\nTokens={tokens}\nLabels={labels}")
+            labels = labels + ["O"] * (len(tokens) - len(labels))
+
+        labels = ["O" if (lbl is None or lbl.strip() == "") else lbl for lbl in labels]
+
         X.append(sent2features(tokens))
         y.append(labels)
+
     return X, y
 
 
-# 2. Prepare features/labels
-X_train, y_train = prepare(train)
-X_test, y_test = prepare(test)
+# =========================================================
+# 2. Prepare CRF training features
+# =========================================================
 
-# 3. Train CRF
-# Slightly higher max_iterations to ensure convergence on synthetic data
-crf = CRFTagger(c1=0.05, c2=0.05, max_iterations=300)
+X_train, y_train = prepare(train_data)
+X_test, y_test = prepare(test_data)
+
+# =========================================================
+# 3. Train CRF Model
+# =========================================================
+
+print("\n Training CRF on synthetic dataset...")
+
+crf = CRFTagger(c1=0.1, c2=0.1, max_iterations=300)
 crf.fit(X_train, y_train)
 
-# 4. Predict & Evaluate
-raw_pred = crf.predict(X_test)
-# Ensure predictions are plain Python lists for seqeval compatibility
-y_pred = [list(seq) for seq in raw_pred]
-p, r, f = span_f1(y_test, y_pred)
+# =========================================================
+# 4. Evaluate the Model
+# =========================================================
 
-print("\n=== Synthetic CRF Experiment Results ===")
-print(f"Precision: {p:.3f}")
-print(f"Recall:    {r:.3f}")
-print(f"F1 Score:  {f:.3f}")
+predictions = crf.predict(X_test)
+y_pred = [list(seq) for seq in predictions]
 
-# 5. Qualitative inspection (required)
-print("\n=== Qualitative Examples ===\n")
+precision, recall, f1 = span_f1(y_test, y_pred)
 
-for (tokens, gold), pred in zip(test, y_pred):
+print("\n===== Synthetic CRF Evaluation Results =====")
+print(f"Precision: {precision:.3f}")
+print(f"Recall:    {recall:.3f}")
+print(f"F1 Score:  {f1:.3f}")
+print("============================================")
+
+# =========================================================
+# 5. Qualitative Inspect — Required
+# =========================================================
+
+print("\n Sample Predictions:\n")
+
+for (tokens, gold), pred in zip(test_data[:10], y_pred[:10]):
     print("Sentence:", " ".join(tokens))
     print("Gold:    ", gold)
     print("Pred:    ", pred)
-    print("-" * 40)
+    print("-" * 50)

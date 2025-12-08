@@ -1,0 +1,9 @@
+Model,Dataset,Precision,Recall,F1
+BiLSTM-CRF + GloVe,restaurants,0.555,0.507,0.53
+BiLSTM-CRF + GloVe,restaurants,0.555,0.507,0.53
+BiLSTM-CRF + GloVe,restaurants,0.555,0.507,0.53
+CRF,laptops,0.575,0.32,0.411
+BiLSTM-CRF,laptops,0.54,0.403,0.462
+BiLSTM-CRF + GloVe,laptops,0.539,0.475,0.505
+CRF,restaurants,0.506,0.43,0.465
+CRF,laptops,0.572,0.341,0.428

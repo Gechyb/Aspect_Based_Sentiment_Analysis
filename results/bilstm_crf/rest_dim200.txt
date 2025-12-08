@@ -1,32 +1,44 @@
 Random seed set to: 42
 Vocabulary size: 3719
 Using device: cpu
-Model parameters: 1083839
-Epoch 1/20 - train_loss=424.1458 - val_F1=0.006 (P=0.500, R=0.003) *
-Epoch 2/20 - train_loss=199.5958 - val_F1=0.171 (P=0.492, R=0.103) *
-Epoch 3/20 - train_loss=167.2212 - val_F1=0.275 (P=0.482, R=0.192) *
-Epoch 4/20 - train_loss=144.9730 - val_F1=0.350 (P=0.461, R=0.283) *
-Epoch 5/20 - train_loss=127.1340 - val_F1=0.371 (P=0.474, R=0.305) *
-Epoch 6/20 - train_loss=111.9295 - val_F1=0.391 (P=0.472, R=0.333) *
-Epoch 7/20 - train_loss=98.8954 - val_F1=0.418 (P=0.497, R=0.360) *
-Epoch 8/20 - train_loss=86.9030 - val_F1=0.425 (P=0.525, R=0.357) *
-Epoch 9/20 - train_loss=76.2107 - val_F1=0.450 (P=0.530, R=0.391) *
-Epoch 10/20 - train_loss=66.0965 - val_F1=0.432 (P=0.524, R=0.367) 
-Epoch 11/20 - train_loss=55.9867 - val_F1=0.478 (P=0.535, R=0.431) *
-Epoch 12/20 - train_loss=47.9632 - val_F1=0.490 (P=0.552, R=0.441) *
-Epoch 13/20 - train_loss=40.4198 - val_F1=0.500 (P=0.553, R=0.456) *
-Epoch 14/20 - train_loss=33.3317 - val_F1=0.486 (P=0.527, R=0.451) 
-Epoch 15/20 - train_loss=28.3513 - val_F1=0.488 (P=0.552, R=0.438) 
-Epoch 16/20 - train_loss=23.4703 - val_F1=0.466 (P=0.522, R=0.422) 
-Epoch 17/20 - train_loss=18.8763 - val_F1=0.488 (P=0.538, R=0.446) 
-Epoch 18/20 - train_loss=16.2064 - val_F1=0.460 (P=0.513, R=0.417) 
-Epoch 19/20 - train_loss=13.2593 - val_F1=0.481 (P=0.536, R=0.436) 
-Epoch 20/20 - train_loss=11.4577 - val_F1=0.456 (P=0.519, R=0.407) 
+Model parameters: 881087
+Epoch 1/20 - train_loss=9.4048 - val_F1=0.227 (P=0.482, R=0.149) *
+Epoch 2/20 - train_loss=4.6292 - val_F1=0.356 (P=0.459, R=0.291) *
+Epoch 3/20 - train_loss=3.6098 - val_F1=0.411 (P=0.488, R=0.355) *
+Epoch 4/20 - train_loss=2.8961 - val_F1=0.458 (P=0.516, R=0.412) *
+Epoch 5/20 - train_loss=2.3478 - val_F1=0.463 (P=0.513, R=0.422) *
+Epoch 6/20 - train_loss=1.9224 - val_F1=0.447 (P=0.500, R=0.404) 
+Epoch 7/20 - train_loss=1.5789 - val_F1=0.468 (P=0.518, R=0.426) *
+Epoch 8/20 - train_loss=1.2224 - val_F1=0.471 (P=0.507, R=0.439) *
+Epoch 9/20 - train_loss=0.9545 - val_F1=0.507 (P=0.540, R=0.478) *
+Epoch 10/20 - train_loss=0.7223 - val_F1=0.500 (P=0.537, R=0.468) 
+Epoch 11/20 - train_loss=0.5621 - val_F1=0.515 (P=0.551, R=0.483) *
+Epoch 12/20 - train_loss=0.4201 - val_F1=0.486 (P=0.523, R=0.454) 
+Epoch 13/20 - train_loss=0.3296 - val_F1=0.494 (P=0.519, R=0.472) 
+Epoch 14/20 - train_loss=0.2603 - val_F1=0.487 (P=0.517, R=0.460) 
+Epoch 15/20 - train_loss=0.2116 - val_F1=0.494 (P=0.525, R=0.467) 
+Epoch 16/20 - train_loss=0.1650 - val_F1=0.504 (P=0.547, R=0.467) 
+Epoch 17/20 - train_loss=0.1182 - val_F1=0.514 (P=0.545, R=0.486) 
+Epoch 18/20 - train_loss=0.0878 - val_F1=0.516 (P=0.544, R=0.491) *
+Epoch 19/20 - train_loss=0.0777 - val_F1=0.523 (P=0.549, R=0.499) *
+Epoch 20/20 - train_loss=0.0689 - val_F1=0.521 (P=0.542, R=0.501) 
 
-Loading best model from epoch 13 (val_F1=0.500)
+Loading best model from epoch 19 (val_F1=0.523)
 
-Model         Precision    Recall    F1
-----------  -----------  --------  ----
-BiLSTM-CRF        0.491     0.415  0.45
+Model         Precision    Recall     F1
+----------  -----------  --------  -----
+BiLSTM-CRF        0.493      0.44  0.465
 
-Best validation F1: 0.500
+Final Test Report:
+               precision    recall  f1-score   support
+
+         NEG       0.36      0.21      0.26       120
+         NEU       0.30      0.16      0.20       116
+         POS       0.55      0.63      0.59       318
+
+   micro avg       0.49      0.44      0.47       554
+   macro avg       0.40      0.33      0.35       554
+weighted avg       0.46      0.44      0.44       554
+
+
+Best validation F1: 0.523

@@ -1,17 +1,30 @@
+# src/train_bilstm_crf.py
+
 import argparse
 from pathlib import Path
 from collections import Counter
+import random
+import numpy as np
+
 import torch
 from torch.utils.data import Dataset, DataLoader
 from tabulate import tabulate
-import random
-import numpy as np
+from seqeval.metrics import (
+    precision_score,
+    recall_score,
+    f1_score,
+    classification_report,
+)
+
 from .config import Config
 from .data_utils import load_sentences, train_val_test_split
 from .models.bilstm_crf import BiLSTMCRF
-from .metrics import span_f1
 from .tagging_scheme import TAGS, TAG2ID, ID2TAG
 from .glove_utils import load_embeddings_for_vocab
+from .metrics import normalize_predictions
+
+# from .results_logger import log_results
+from TorchCRF import CRF
 
 
 class ABSASeqDataset(Dataset):
@@ -30,15 +43,9 @@ class ABSASeqDataset(Dataset):
 
     def __getitem__(self, idx):
         ex = self.data[idx]
-        tokens = ex["tokens"]
-        labels = ex["labels"]
-
-        # Map tokens to ids (lowercased), unknown -> <unk>
-        x = [self.vocab.get(t.lower(), self.vocab["<unk>"]) for t in tokens]
-        # Map BIO-Sentiment tags to ids
-        y = [TAG2ID[la] for la in labels]
-
-        return torch.tensor(x, dtype=torch.long), torch.tensor(y, dtype=torch.long)
+        x = [self.vocab.get(t.lower(), self.vocab["<unk>"]) for t in ex["tokens"]]
+        y = [TAG2ID[t] for t in ex["labels"]]
+        return torch.tensor(x), torch.tensor(y)
 
 
 def build_vocab(data, min_freq=1):
@@ -69,7 +76,7 @@ def collate(batch):
     pad_x = torch.zeros(len(xs), maxlen, dtype=torch.long)  # <pad> id = 0
     pad_y = torch.full(
         (len(xs), maxlen), TAG2ID["PAD"], dtype=torch.long
-    )  # pad labels with PAD
+    )  # labels padded with PAD
     mask = torch.zeros(len(xs), maxlen, dtype=torch.bool)
 
     for i, (x, y) in enumerate(zip(xs, ys)):
@@ -82,55 +89,51 @@ def collate(batch):
 
 
 def set_seed(seed):
-    """
-    Set all random seeds for reproducibility.
-    """
+    """Set all random seeds for reproducibility."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-
     if torch.cuda.is_available():
         torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
-
-    # Make PyTorch deterministic
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
 
 def evaluate(model, dataloader, device):
+    """
+    Span-level evaluation using seqeval.
+
+    This computes precision/recall/F1 over BIO entity spans,
+    not per-token accuracy, and excludes 'O' dominance by using
+    the standard CoNLL-style entity matching.
+    """
     model.eval()
-    all_true = []
-    all_pred = []
+    all_true, all_pred = [], []
 
     with torch.no_grad():
-        for x, y, m in dataloader:
-            x = x.to(device)
-            y = y.to(device)
-            m = m.to(device)
+        for x, y, mask in dataloader:
+            x, y, mask = x.to(device), y.to(device), mask.to(device)
 
-            # CRF decode (list of lists, already trimmed by mask)
-            preds = model(x, tags=None, mask=m)
+            # CRF decode: list of paths, already trimmed by mask internally
+            preds = model(x, tags=None, mask=mask)
 
-            # Loop over batch samples one by one
-            for pred_ids, gold_ids, mask_row in zip(preds, y, m):
-                L = int(mask_row.sum().item())  # REAL length
+            for pred_ids, gold_ids, mask_row in zip(preds, y, mask):
+                L = int(mask_row.sum().item())  # real length
 
                 gold_tags = [ID2TAG[int(t)] for t in gold_ids[:L].tolist()]
 
-                # Handle case where viterbi_decode returns fewer predictions
-                pred_tags = [ID2TAG[int(p)] for p in pred_ids]
-
-                # Ensure both sequences have the same length
-                if len(pred_tags) < L:
-                    pred_tags = pred_tags + ["O"] * (L - len(pred_tags))
-                elif len(pred_tags) > L:
-                    pred_tags = pred_tags[:L]
+                fixed_pred_ids = normalize_predictions(pred_ids, L)
+                pred_tags = [ID2TAG[int(p)] for p in fixed_pred_ids]
 
                 all_true.append(gold_tags)
                 all_pred.append(pred_tags)
 
-    return span_f1(all_true, all_pred)
+    p = precision_score(all_true, all_pred, zero_division=0)
+    r = recall_score(all_true, all_pred, zero_division=0)
+    f = f1_score(all_true, all_pred, zero_division=0)
+    report = classification_report(all_true, all_pred, zero_division=0)
+    return p, r, f, report
 
 
 def main():
@@ -141,26 +144,20 @@ def main():
     parser.add_argument(
         "--use_glove", action="store_true", help="Use pre-trained GloVe embeddings"
     )
-    parser.add_argument(
-        "--glove_dir",
-        type=str,
-        default="./data/glove",
-        help="Directory containing GloVe files",
-    )
     args = parser.parse_args()
 
     cfg = Config(domain=args.domain)
 
-    # Set random seeds for reproducibility
+    # Seed everything
     set_seed(cfg.seed)
     print(f"Random seed set to: {cfg.seed}")
 
+    # Load data
     path = Path(cfg.data_dir) / f"{cfg.domain}.jsonl"
     data = load_sentences(path)
-
     train, val, test = train_val_test_split(data, seed=cfg.seed)
 
-    # Build vocab from training set only
+    # Vocab from train only
     vocab = build_vocab(train, min_freq=1)
     print(f"Vocabulary size: {len(vocab)}")
 
@@ -169,7 +166,7 @@ def main():
     if args.use_glove:
         try:
             pretrained_embeddings = load_embeddings_for_vocab(
-                vocab, args.glove_dir, embedding_dim=cfg.embedding_dim
+                vocab, cfg.glove_dir, embedding_dim=cfg.embedding_dim
             )
         except FileNotFoundError as e:
             print(f"Warning: {e}")
@@ -190,7 +187,6 @@ def main():
         test_ds, batch_size=cfg.batch_size, shuffle=False, collate_fn=collate
     )
 
-    # Model & optimizer
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
@@ -201,25 +197,25 @@ def main():
         hidden_dim=cfg.hidden_dim,
         pad_idx=0,
         dropout=cfg.dropout,
-        pretrained_embeddings=pretrained_embeddings,  # NEW
+        pretrained_embeddings=pretrained_embeddings,
     ).to(device)
 
     print(f"Model parameters: {sum(p.numel() for p in model.parameters())}")
 
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=1e-5)
 
-    # Training loop with model checkpointing
     best_val_f1 = 0.0
     best_model_state = None
+    best_epoch = 0
 
     for epoch in range(cfg.epochs):
         model.train()
         total_train_loss = 0.0
 
-        for x, y, m in train_dl:
-            x, y, m = x.to(device), y.to(device), m.to(device)
+        for x, y, mask in train_dl:
+            x, y, mask = x.to(device), y.to(device), mask.to(device)
 
-            loss = model(x, tags=y, mask=m)
+            loss = model(x, tags=y, mask=mask)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -227,17 +223,14 @@ def main():
             total_train_loss += loss.item()
 
         avg_train_loss = total_train_loss / len(train_dl)
+        p_val, r_val, f_val, _ = evaluate(model, val_dl, device)
 
-        # Evaluate on validation set each epoch
-        p_val, r_val, f_val = evaluate(model, val_dl, device)
-
-        # Saving best model checkpoint
         if f_val > best_val_f1:
             best_val_f1 = f_val
+            best_epoch = epoch + 1
             best_model_state = {
                 k: v.cpu().clone() for k, v in model.state_dict().items()
             }
-            best_epoch = epoch + 1
 
         print(
             f"Epoch {epoch+1}/{cfg.epochs} "
@@ -246,12 +239,12 @@ def main():
             f"{'*' if f_val == best_val_f1 else ''}"
         )
 
-    # 9. Load best model and evaluate on test set
     print(f"\nLoading best model from epoch {best_epoch} (val_F1={best_val_f1:.3f})")
     model.load_state_dict(best_model_state)
     model.to(device)
 
-    p_test, r_test, f_test = evaluate(model, test_dl, device)
+    p_test, r_test, f_test, report = evaluate(model, test_dl, device)
+
     print()
     print(
         tabulate(
@@ -266,6 +259,8 @@ def main():
             headers=["Model", "Precision", "Recall", "F1"],
         )
     )
+    print("\nFinal Test Report:\n", report)
+
     print(f"\nBest validation F1: {best_val_f1:.3f}")
 
 
